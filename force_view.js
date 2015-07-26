@@ -5,6 +5,7 @@ function log(msg) {
 }
 
 var remote = require('remote'),
+    ipc = require('ipc'),
     fs = remote.require('fs');
 
 var width = 960,
@@ -274,37 +275,34 @@ function spliceLinksForNode(node) {
       links.splice(links.indexOf(l), 1); });
 }
 
+function loadSystem(filename) {
+  fs.readFile(filename, function(err, data) {
+    if(err) log('read error');
+    if(err) log(err);
+    json_data = JSON.parse(data);
+    nodes = json_data.nodes;
+    links = json_data.links;
+    redraw();
+  });
+}
+
+function saveSystem(filename) {
+  data = {
+    nodes: nodes,
+    links: links
+  };
+  fs.writeFile(filename, JSON.stringify(data), function(err) {
+    if(err) log('write failed');
+    log('written');
+  });
+}
+
 function keydown() {
   switch(d3.event.keyCode) {
-    case 79: {
-      // TODO: move this logic to main process
-      log('reading');
-      fs.readFile('file.json', function(err, data) {
-        if(err) log('read error');
-        if(err) log(err);
-        json_data = JSON.parse(data);
-        nodes = json_data.nodes;
-        links = json_data.links;
-        redraw();
-      });
-      break;
-    }
-    case 83: { // s for save
-      // TODO: move this logic to main process
-      log("writing");
-      data = {
-        nodes: nodes,
-        links: links
-      };
-      fs.writeFile('file.json', JSON.stringify(data), function(err) {
-        if(err) log('write failed');
-        log('written');
-      });
-      break;
-    }
-    default: {
-      console.log(d3.event.keyCode);
-    }
+    case 79: { loadSystem('file.json'); break; } // o for open
+    case 83: { saveSystem('file.json'); break; } // s for save
+    case 191: { ipc.sendSync('toggle-dev-tools'); break; } // ? for dev tools
+    default: { console.log(d3.event.keyCode); }
   }
 
   if (!selected_node && !selected_link) return;

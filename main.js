@@ -1,4 +1,5 @@
 var app = require('app'),
+    ipc = require('ipc'),
     //fs = require('fs'),
     BrowserWindow = require('browser-window'),
     Menu = require('menu');
@@ -39,7 +40,9 @@ app.on('ready', function() {
   mainWindow.loadUrl("file://" + __dirname + "/index.html")
   //mainWindow.setRepresentedFilename('/etc/sim.ots');
   //mainWindow.setDocumentEdited(true);
-  mainWindow.openDevTools();
+  ipc.on('toggle-dev-tools', function(e, args) {
+    mainWindow.toggleDevTools();
+  });
   mainWindow.on('closed', function() {
     mainWindow = null;
   });
