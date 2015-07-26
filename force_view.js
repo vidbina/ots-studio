@@ -1,8 +1,16 @@
+const DEBUG = true;
+
+function log(msg) {
+  if(DEBUG == true) console.log(msg);
+}
+
+var remote = require('remote'),
+    fs = remote.require('fs');
+
 var width = 960,
     height = 500,
     fill = d3.scale.category20();
 
-console.log("force view");
 // mouse event vars
 var selected_node = null,
     selected_link = null,
@@ -29,15 +37,15 @@ var vis = outer
 vis.append('svg:rect')
     .attr('width', width)
     .attr('height', height)
-    .attr('fill', 'white');
+    .attr('fill', 'red');
 
 // init force layout
-var force = d3.layout.force()
-    .size([width, height])
-    .nodes([{}]) // initialize with a single node
-    .linkDistance(50)
-    .charge(-200)
-    .on("tick", tick);
+//var force = d3.layout.force()
+//    .size([width, height])
+//    .nodes([{}]) // initialize with a single node
+//    .linkDistance(50)
+//    .charge(-200)
+//    .on("tick", tick);
 
 
 // line displayed when dragging new nodes
@@ -49,10 +57,15 @@ var drag_line = vis.append("line")
     .attr("y2", 0);
 
 // get layout properties
-var nodes = force.nodes(),
-    links = force.links(),
-    node = vis.selectAll(".node"),
+var nodes = [],
+    links = [];
+//var nodes = force.nodes(),
+//    links = force.links(),
+var node = vis.selectAll(".node"),
     link = vis.selectAll(".link");
+
+function nodeSelection() { return vis.selectAll(".node"); }
+function linkSelection() { return vis.selectAll(".link"); }
 
 // add keyboard callback
 d3.select(window)
@@ -61,12 +74,17 @@ d3.select(window)
 redraw();
 
 // focus on svg
-// vis.node().focus();
+vis.node().focus();
+
+function update() {
+  redraw();
+}
 
 function mousedown() {
   if (!mousedown_node && !mousedown_link) {
     // allow panning if nothing is selected
     vis.call(d3.behavior.zoom().on("zoom"), rescale);
+    // update();
     return;
   }
 }
@@ -80,19 +98,22 @@ function mousemove() {
       .attr("y1", mousedown_node.y)
       .attr("x2", d3.svg.mouse(this)[0])
       .attr("y2", d3.svg.mouse(this)[1]);
+  update();
 
 }
 
 function mouseup() {
+  log("MOUSEUP");
+  var point = d3.mouse(this);
   if (mousedown_node) {
+    log("started somewhere");
     // hide drag line
     drag_line
       .attr("class", "drag_line_hidden")
 
     if (!mouseup_node) {
       // add node
-      var point = d3.mouse(this),
-        node = {x: point[0], y: point[1]},
+      var node = {x: point[0], y: point[1]},
         n = nodes.push(node);
 
       // select new node
@@ -103,6 +124,12 @@ function mouseup() {
       links.push({source: mousedown_node, target: node});
     }
 
+    redraw();
+  } else if (nodes.length == 0) {
+    log("setup a initial node at " + point[0] + ", " + point[1]);
+    nodes.push({x: point[0], y: point[1]});
+    log(nodeSelection());
+    log("done here");
     redraw();
   }
   // clear mouse event vars
@@ -116,6 +143,9 @@ function resetMouseVars() {
 }
 
 function tick() {
+  log("|");
+  log(link);
+  log(nodeSelection());
   link.attr("x1", function(d) { return d.source.x; })
       .attr("y1", function(d) { return d.source.y; })
       .attr("x2", function(d) { return d.target.x; })
@@ -137,7 +167,8 @@ function rescale() {
 
 // redraw force layout
 function redraw() {
-
+  tick();
+  log('redrawing');
   link = link.data(links);
 
   link.enter().insert("line", ".node")
@@ -156,6 +187,7 @@ function redraw() {
   link
     .classed("link_selected", function(d) { return d === selected_link; });
 
+  console.log(nodes);
   node = node.data(nodes);
 
   node.enter().insert("circle")
@@ -163,10 +195,13 @@ function redraw() {
       .attr("r", 5)
       .on("mousedown", 
         function(d) { 
+          console.log("DOWN");
           // disable zoom
           vis.call(d3.behavior.zoom().on("zoom"), null);
 
           mousedown_node = d;
+          console.log(d);
+          console.log("x = "+ +d.x + ", y = " + d.y);
           if (mousedown_node == selected_node) selected_node = null;
           else selected_node = mousedown_node; 
           selected_link = null; 
@@ -183,10 +218,12 @@ function redraw() {
         })
       .on("mousedrag",
         function(d) {
-          // redraw();
+          console.log("x = "+ d.x + ", y = " + d.y);
+          redraw();
         })
       .on("mouseup", 
         function(d) { 
+          console.log("UP");
           if (mousedown_node) {
             mouseup_node = d; 
             if (mouseup_node == mousedown_node) { resetMouseVars(); return; }
@@ -216,15 +253,16 @@ function redraw() {
   node
     .classed("node_selected", function(d) { return d === selected_node; });
 
-  
-
   if (d3.event) {
     // prevent browser's default behavior
     d3.event.preventDefault();
   }
 
-  force.start();
+  log(nodeSelection());
+  log('end redraw');
 
+  //force.start();
+  tick();
 }
 
 function spliceLinksForNode(node) {
@@ -237,6 +275,38 @@ function spliceLinksForNode(node) {
 }
 
 function keydown() {
+  switch(d3.event.keyCode) {
+    case 79: {
+      // TODO: move this logic to main process
+      log('reading');
+      fs.readFile('file.json', function(err, data) {
+        if(err) log('read error');
+        if(err) log(err);
+        json_data = JSON.parse(data);
+        nodes = json_data.nodes;
+        links = json_data.links;
+        redraw();
+      });
+      break;
+    }
+    case 83: { // s for save
+      // TODO: move this logic to main process
+      log("writing");
+      data = {
+        nodes: nodes,
+        links: links
+      };
+      fs.writeFile('file.json', JSON.stringify(data), function(err) {
+        if(err) log('write failed');
+        log('written');
+      });
+      break;
+    }
+    default: {
+      console.log(d3.event.keyCode);
+    }
+  }
+
   if (!selected_node && !selected_link) return;
   switch (d3.event.keyCode) {
     case 8: // backspace

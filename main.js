@@ -1,4 +1,5 @@
 var app = require('app'),
+    //fs = require('fs'),
     BrowserWindow = require('browser-window'),
     Menu = require('menu');
 
@@ -33,7 +34,7 @@ app.on('enter-full-screen', function() {
 // just get the app ready
 app.on('ready', function() {
   log("ready");
-  mainWindow = new BrowserWindow({ width: 500, height: 300, title: 'OTS Studio'  });
+  mainWindow = new BrowserWindow({ width: 1000, height: 600, title: 'OTS Studio'  });
 
   mainWindow.loadUrl("file://" + __dirname + "/index.html")
   //mainWindow.setRepresentedFilename('/etc/sim.ots');
