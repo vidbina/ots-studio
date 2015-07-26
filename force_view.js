@@ -68,9 +68,14 @@ var node = vis.selectAll(".node"),
 function nodeSelection() { return vis.selectAll(".node"); }
 function linkSelection() { return vis.selectAll(".link"); }
 
+function resize() {
+  // adapterd from http://bl.ocks.org/mbostock/3355967
+  outer.attr("width", window.innerWidth).attr("height", window.innerHeight);
+}
 // add keyboard callback
 d3.select(window)
-    .on("keydown", keydown);
+    .on("keydown", keydown)
+    .on("resize", resize);
 
 redraw();
 
