@@ -349,12 +349,13 @@ function saveSystem(filename) {
   });
 }
 
+var ret = null;
 function keydown() {
   switch(d3.event.keyCode) {
     case 73: { loadImages(['bg.png']); break; } // i for image
     case 79: { loadSystem('file.json'); break; } // o for open
     case 83: { saveSystem('file.json'); break; } // s for save
-    case 191: { ipc.sendSync('toggle-dev-tools'); break; } // ? for dev tools
+    case 191: { ret = ipc.sendSync('toggle-dev-tools'); break; } // ? for dev tools
     default: { console.log(d3.event.keyCode); }
   }
 

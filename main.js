@@ -40,8 +40,9 @@ app.on('ready', function() {
   mainWindow.loadUrl("file://" + __dirname + "/index.html")
   //mainWindow.setRepresentedFilename('/etc/sim.ots');
   //mainWindow.setDocumentEdited(true);
-  ipc.on('toggle-dev-tools', function(e, args) {
+  ipc.on('toggle-dev-tools', function(event, args) {
     mainWindow.toggleDevTools();
+    event.returnValue = true
   });
   mainWindow.on('closed', function() {
     mainWindow = null;
