@@ -27,10 +27,15 @@ var outer = d3.select("#chart")
     .attr("height", height)
     .attr("pointer-events", "all");
 
+outer
+  .call(d3.behavior.zoom().on("zoom", rescale))
+  .attr("width", window.innerWidth)
+  .attr("height", window.innerHeight);
+
 var vis = outer
   .append('svg:g')
-    .call(d3.behavior.zoom().on("zoom", rescale))
-    .on("dblclick.zoom", null)
+    //.call(d3.behavior.zoom().on("zoom", rescale))
+    //.on("dblclick.zoom", null)
   .append('svg:g')
     .on("mousemove", mousemove)
     .on("mousedown", mousedown)
@@ -75,6 +80,7 @@ function resize() {
   log(window.innerWidth);
   outer.attr("width", window.innerWidth).attr("height", window.innerHeight);
 }
+
 // add keyboard callback
 d3.select(window)
     .on("keydown", keydown)
