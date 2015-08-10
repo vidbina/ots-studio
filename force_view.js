@@ -295,22 +295,19 @@ function uriImage(data, type) {
   return("data:image/" + type + ";base64," + data);
 }
 
-var image_base64 = null;
+var graphic = require('./png.js');
 function loadImages(images) {
   for(var i = 0; f = images[i]; i++) {
-    log('reading ' + f);
     fs.readFile(f, function(err, data) {
-      log('busy');
-      image_base64 = data.toString('base64');
-      log('read ' + image_base64.length);
+      var image = graphic.PngImage(data);
       background.append('svg:image')
         .attr('xmlns', 'http://www.w3.org/2000/svg')
         //.attr('id', 'background-image')
         .attr('x', 240)
         .attr('y', 0)
-        .attr('width', 915)
-        .attr('height', 468)
-        .attr('xlink:href', uriImage(image_base64, 'png'));
+        .attr('width', image.width)
+        .attr('height', image.height)
+        .attr('xlink:href', image.uri);
     });
   }
 }
