@@ -1,0 +1,41 @@
+{
+  "name": "OTS Studio",
+  "version": "0.0.1",
+  "authors": [
+    "David Asabina <david@supr.nu>"
+  ],
+  "description": "A tool for designing and running OTS simulations",
+  "main": "index.html",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "graph",
+    "editor",
+    "simulation",
+    "design",
+    "infrastructure",
+    "design",
+    "ui",
+    "user",
+    "interface",
+    "OTS",
+    "open",
+    "traffic",
+    "simulation"
+  ],
+  "license": "MIT",
+  "homepage": "http://opentrafficsim.org",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d3": "~3.3.5",
+    "requirejs": "~2.1.17",
+    "requirejs-domready": "~2.0.1"
+  }
+}
