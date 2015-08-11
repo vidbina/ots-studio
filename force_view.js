@@ -364,3 +364,10 @@ function keydown() {
     }
   }
 }
+
+var actions = {
+  openFile: function(args) { loadSystem('file.json'); },
+  saveFile: function(args) { saveSystem('file.json'); },
+  showLayers: function(args) { loadImages(['bg.png']); },
+  showProperties: function(args) { ipc.sendSync('show-properties-window'); },
+}

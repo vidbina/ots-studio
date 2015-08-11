@@ -76,26 +76,26 @@ body {
     <ul>
       <li>
         <div class="btn-group" role="group">
-          <button type="button" class="btn btn-default">
+          <button type="button" class="btn btn-default" onclick="actions.openFile()">
             <span class="glyphicon glyphicon-open-file"></span> Open
           </button>
-          <button type="button" class="btn btn-default">
+          <button type="button" class="btn btn-default" onclick="actions.saveFile()">
             <span class="glyphicon glyphicon-save-file"></span> Save
           </button>
         </div>
       </li>
       <li>
         <div class="btn-group" role="group">
-          <button type="button" class="btn btn-warning">
+          <button type="button" class="btn btn-warning" onclick="actions.showLayers()">
             <span class="glyphicon glyphicon-star"></span> Layers
           </button>
-          <button type="button" class="btn btn-warning">
+          <button type="button" class="btn btn-warning" onclick="actions.showProperties()">
             <span class="glyphicon glyphicon-star"></span> Properties
           </button>
         </div>
       </li>
       <li>
-        <button type="button" class="btn btn-info">
+        <button type="button" class="btn btn-info" onclick="actions.startSimulation()">
           <span class="glyphicon glyphicon-play"></span> Simulate
           <!--<span class="glyphicon glyphicon-pause"></span> Pause -->
         </button>
