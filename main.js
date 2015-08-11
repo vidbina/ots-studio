@@ -35,7 +35,21 @@ app.on('enter-full-screen', function() {
 // just get the app ready
 app.on('ready', function() {
   log("ready");
-  mainWindow = new BrowserWindow({ width: 1000, height: 600, title: 'OTS Studio'  });
+
+  mainWindow = new BrowserWindow({ 
+    "width": 1000, 
+    "min-width": 700,
+    "height": 600, 
+    "min-height": 500,
+    "fullscreen": false,
+    //"center": true,
+    "x": 300,
+    "y": 50,
+    "title": 'OTS Studio' ,
+    "type": "desktop"
+  });
+
+  propertiesWindow = null; 
 
   mainWindow.loadUrl("file://" + __dirname + "/index.html")
   //mainWindow.setRepresentedFilename('/etc/sim.ots');
@@ -44,7 +58,22 @@ app.on('ready', function() {
     mainWindow.toggleDevTools();
     event.returnValue = true
   });
+  ipc.on('show-properties-window', function(event, args) {
+    propertiesWindow = new BrowserWindow({
+      "width": 200,
+      "height": 600,
+      "resizable": false,
+      "center": true,
+      "x": 50,
+      "y": 50,
+      "title": "Properties",
+      "type": "dock",
+      show: false
+    });
+    propertiesWindow.show();
+  });
   mainWindow.on('closed', function() {
     mainWindow = null;
+    if(propertiesWindow) propertiesWindow.close();
   });
 });

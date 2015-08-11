@@ -340,6 +340,7 @@ function keydown() {
   switch(d3.event.keyCode) {
     case 73: { loadImages(['bg.png']); break; } // i for image
     case 79: { loadSystem('file.json'); break; } // o for open
+    case 80: { ipc.sendSync('show-properties-window'); break; } // p show properties window
     case 83: { saveSystem('file.json'); break; } // s for save
     case 191: { ret = ipc.sendSync('toggle-dev-tools'); break; } // ? for dev tools
     default: { console.log(d3.event.keyCode); }
