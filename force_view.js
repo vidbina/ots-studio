@@ -295,6 +295,7 @@ function uriImage(data, type) {
   return("data:image/" + type + ";base64," + data);
 }
 
+// TODO: change ./png.js to ./images.js
 var graphic = require('./png.js');
 function loadImages(images) {
   for(var i = 0; f = images[i]; i++) {
