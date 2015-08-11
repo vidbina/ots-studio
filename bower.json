@@ -34,7 +34,7 @@
     "tests"
   ],
   "dependencies": {
-    "d3": "~3.3.5",
+    "d3": "~2.10.3",
     "requirejs": "~2.1.17",
     "requirejs-domready": "~2.0.1"
   }
