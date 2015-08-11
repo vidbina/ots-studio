@@ -3,6 +3,9 @@
 <head>
 <title>Open Traffic Sim</title>
 <script src="bower_components/d3/d3.v2.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
 <style>
 
 body {
@@ -51,16 +54,56 @@ body {
 }
 
 #toolbar {
-  height: 35px;
-  background-color: #757D75;
+  overflow: hidden;
+  border-bottom: 1px solid #ddd;
+}
+
+#toolbar ul {
+  padding: 4px;
+  margin: 0;
+}
+#toolbar ul li {
+  list-style-type: none;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
 }
 
 </style>
 <head>
 <body>
-  <div id="toolbar"></div>
-  <div id="chart">
+  <div id="toolbar">
+    <ul>
+      <li>
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-open-file"></span> Open
+          </button>
+          <button type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-save-file"></span> Save
+          </button>
+        </div>
+      </li>
+      <li>
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-warning">
+            <span class="glyphicon glyphicon-star"></span> Layers
+          </button>
+          <button type="button" class="btn btn-warning">
+            <span class="glyphicon glyphicon-star"></span> Properties
+          </button>
+        </div>
+      </li>
+      <li>
+        <button type="button" class="btn btn-info">
+          <span class="glyphicon glyphicon-play"></span> Simulate
+          <!--<span class="glyphicon glyphicon-pause"></span> Pause -->
+        </button>
+      </li>
+    </ul>
   </div>
-<script src="force_view.js"></script>
+  <div id="chart"></div>
+  <script src="force_view.js"></script>
+  <script src="bower_components/jquery/dist/jquery.js"></script>
 </body>
 </html>

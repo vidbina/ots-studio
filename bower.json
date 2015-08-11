@@ -35,6 +35,8 @@
   ],
   "dependencies": {
     "d3": "~2.10.3",
+    "jquery": "~1.11.3",
+    "bootstrap": "~3.3.5",
     "requirejs": "~2.1.17",
     "requirejs-domready": "~2.0.1"
   }
