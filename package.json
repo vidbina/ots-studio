@@ -1,5 +1,15 @@
 {
   "name": "ots-studio",
   "version": "0.0.1",
-  "main": "main.js"
+  "license": "MIT",
+  "author": [
+    { 
+      "name": "David Asabina", 
+      "email": "david@supr.nu", 
+      "url": "supr.nu"
+    }
+  ],
+  "main": "main.js",
+  "dependencies": {
+  }
 }
