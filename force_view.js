@@ -19,6 +19,22 @@ var selected_node = null,
     mousedown_node = null,
     mouseup_node = null;
 
+function setSelectedNode(node) {
+  selected_node = node;
+  selected_link = null;
+  if(selected_node) {
+    ipc.send('view-properties', selected_node);
+  }
+}
+
+function setSelectedLink(link) {
+  selected_node = null;
+  selected_link = link;
+  if(selected_link) {
+    ipc.send('view-properties', selected_link);
+  }
+}
+
 // init svg
 var outer = d3.select("#chart")
   .append("svg:svg")
@@ -79,7 +95,6 @@ function linkSelection() { return vis.selectAll(".link"); }
 
 function resize() {
   // adapterd from http://bl.ocks.org/mbostock/3355967
-  log(window.innerWidth);
   outer.attr("width", window.innerWidth).attr("height", window.innerHeight);
 }
 
@@ -120,10 +135,8 @@ function mousemove() {
 }
 
 function mouseup() {
-  log("MOUSEUP");
   var point = d3.mouse(this);
   if (mousedown_node) {
-    log("started somewhere");
     // hide drag line
     drag_line
       .attr("class", "drag_line_hidden")
@@ -134,8 +147,7 @@ function mouseup() {
         n = nodes.push(node);
 
       // select new node
-      selected_node = node;
-      selected_link = null;
+      setSelectedNode(node);
       
       // add link to mousedown node
       links.push({source: mousedown_node, target: node});
@@ -143,10 +155,7 @@ function mouseup() {
 
     redraw();
   } else if (nodes.length == 0) {
-    log("setup a initial node at " + point[0] + ", " + point[1]);
     nodes.push({x: point[0], y: point[1]});
-    log(nodeSelection());
-    log("done here");
     redraw();
   }
   // clear mouse event vars
@@ -160,9 +169,6 @@ function resetMouseVars() {
 }
 
 function tick() {
-  log("|");
-  log(link);
-  log(nodeSelection());
   link.attr("x1", function(d) { return d.source.x; })
       .attr("y1", function(d) { return d.source.y; })
       .attr("x2", function(d) { return d.target.x; })
@@ -185,7 +191,6 @@ function rescale() {
 // redraw force layout
 function redraw() {
   tick();
-  log('redrawing');
   link = link.data(links);
 
   link.enter().insert("line", ".node")
@@ -193,9 +198,8 @@ function redraw() {
       .on("mousedown", 
         function(d) { 
           mousedown_link = d; 
-          if (mousedown_link == selected_link) selected_link = null;
-          else selected_link = mousedown_link; 
-          selected_node = null; 
+          if (mousedown_link == selected_link) setSelectedLink(null);
+          else setSelectedLink(mousedown_link); 
           redraw(); 
         })
 
@@ -204,7 +208,6 @@ function redraw() {
   link
     .classed("link_selected", function(d) { return d === selected_link; });
 
-  console.log(nodes);
   node = node.data(nodes);
 
   node.enter().insert("circle")
@@ -212,16 +215,12 @@ function redraw() {
       .attr("r", 5)
       .on("mousedown", 
         function(d) { 
-          console.log("DOWN");
           // disable zoom
           vis.call(d3.behavior.zoom().on("zoom"), null);
 
           mousedown_node = d;
-          console.log(d);
-          console.log("x = "+ +d.x + ", y = " + d.y);
-          if (mousedown_node == selected_node) selected_node = null;
-          else selected_node = mousedown_node; 
-          selected_link = null; 
+          if (mousedown_node == selected_node) setSelectedNode(null);
+          else setSelectedNode(mousedown_node); 
 
           // reposition drag line
           drag_line
@@ -235,12 +234,10 @@ function redraw() {
         })
       .on("mousedrag",
         function(d) {
-          console.log("x = "+ d.x + ", y = " + d.y);
           redraw();
         })
       .on("mouseup", 
         function(d) { 
-          console.log("UP");
           if (mousedown_node) {
             mouseup_node = d; 
             if (mouseup_node == mousedown_node) { resetMouseVars(); return; }
@@ -250,8 +247,7 @@ function redraw() {
             links.push(link);
 
             // select new link
-            selected_link = link;
-            selected_node = null;
+            setSelectedLink(link);
 
             // enable zoom
             vis.call(d3.behavior.zoom().on("zoom"), rescale);
@@ -274,9 +270,6 @@ function redraw() {
     // prevent browser's default behavior
     d3.event.preventDefault();
   }
-
-  log(nodeSelection());
-  log('end redraw');
 
   //force.start();
   tick();
@@ -357,8 +350,7 @@ function keydown() {
       else if (selected_link) {
         links.splice(links.indexOf(selected_link), 1);
       }
-      selected_link = null;
-      selected_node = null;
+      setSelectedLink(null);
       redraw();
       break;
     }

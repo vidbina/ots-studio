@@ -36,17 +36,20 @@ app.on('enter-full-screen', function() {
 app.on('ready', function() {
   log("ready");
 
+  //var appIcon = new Tray('resources/icon.png');
+
   mainWindow = new BrowserWindow({ 
-    "width": 1000, 
+    width: 1000, 
     "min-width": 700,
-    "height": 600, 
+    height: 600, 
     "min-height": 500,
-    "fullscreen": false,
+    fullscreen: false,
+    icon: "resources/icon.png",
     //"center": true,
-    "x": 300,
-    "y": 50,
-    "title": 'OTS Studio' ,
-    "type": "desktop"
+    x: 300,
+    y: 50,
+    title: 'OTS Studio',
+    type: "desktop"
   });
 
   propertiesWindow = null; 
@@ -55,6 +58,10 @@ app.on('ready', function() {
   //mainWindow.setRepresentedFilename('/etc/sim.ots');
   //mainWindow.setDocumentEdited(true);
   ipc.on('toggle-dev-tools', function(event, args) {
+    mainWindow.toggleDevTools();
+    event.returnValue = true
+  });
+  ipc.on('toggle-properties-dev-tools', function(event, args) {
     mainWindow.toggleDevTools();
     event.returnValue = true
   });
@@ -71,6 +78,16 @@ app.on('ready', function() {
       show: false
     });
     propertiesWindow.show();
+    propertiesWindow.loadUrl("file://" + __dirname + "/properties.html");
+  });
+  var selectedProperties = null;
+  ipc.on('view-properties', function(event, args) {
+    log('view props');
+    log(args);
+    selectedProperties = args;
+    if(propertiesWindow) {
+      propertiesWindow.webContents.send('display-properties', selectedProperties);
+    }
   });
   mainWindow.on('closed', function() {
     mainWindow = null;
