@@ -18,7 +18,12 @@
   "dependencies": {},
   "devDependencies": {
     "asar": "~0.7.2",
-    "electron-prebuilt": "^0.30.4",
-    "grunt": "^0.4.5"
+    "electron-packager": "^5.0.1",
+    "electron-prebuilt": "^0.30.4"
+  },
+  "scripts": {
+    "info": "which electron",
+    "start": "electron .",
+    "build-osx": "electron-packager . OTSStudio --platform=darwin --arch=x64 --icon=resources/icon.png --version=0.30.4 --out=build"
   }
 }
