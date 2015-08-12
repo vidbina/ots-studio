@@ -5,8 +5,8 @@ function log(msg) {
   if(DEBUG == true) console.log(msg);
 }
 
-//var dialog = require('dialog'),
 var remote = require('remote'),
+    dialog = remote.require('dialog');
     ipc = require('ipc'),
     fs = remote.require('fs');
 
@@ -310,14 +310,15 @@ function loadImages(images) {
   }
 }
 
+var currentFilename = null;
 function loadSystem(filename) {
-  //log(dialog);
-//  dialog.showOpenDialog({
-//    properties: [ 'openFile' ],
-//    filters: [ { name: 'JSON', extensions: ['json'] } ]
-//  }, function(filenames) {
-    if(filename) {
-      fs.readFile(__dirname + "/" + filename, function(err, data) {
+  dialog.showOpenDialog({
+    properties: [ 'openFile' ],
+    filters: [ { name: 'JSON', extensions: ['json'] } ]
+  }, function(filenames) {
+    currentFilename = filenames[0];
+    if(currentFilename) {
+      fs.readFile(currentFilename, function(err, data) {
         if(err) log('read error');
         if(err) log(err);
         json_data = JSON.parse(data);
@@ -326,20 +327,18 @@ function loadSystem(filename) {
         redraw();
       });
     }
-  //});
+  });
 }
 
 function saveSystem(filename) {
-  /*
   data = {
     nodes: nodes,
     links: links
   };
-  fs.writeFile(filename, JSON.stringify(data), function(err) {
+  fs.writeFile(currentFilename, JSON.stringify(data), function(err) {
     if(err) log('write failed');
     log('written');
   });
-  */
 }
 
 var ret = null;
