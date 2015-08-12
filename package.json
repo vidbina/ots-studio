@@ -24,6 +24,7 @@
   "scripts": {
     "info": "which electron",
     "start": "electron .",
+    "build": "electron-packager . OTSStudio --platform=all --arch=all --icon=resources/icon.png --version=0.30.4 --out=build",
     "build-osx": "electron-packager . OTSStudio --platform=darwin --arch=x64 --icon=resources/icon.png --version=0.30.4 --out=build"
   }
 }

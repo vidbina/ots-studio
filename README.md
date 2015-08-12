@@ -15,6 +15,19 @@ The current file is a build for OSX. There is at least 300 MB of data embedded w
 
 ## Setup
 
-Install grunt
+Setup npm, enter the project directory and install all dependencies:
 
-```npm install -g grunt-cli```
+```npm install ```
+
+### Run
+
+Run the application by running
+
+```npm run-script start```
+
+
+### Build
+
+Build the application by running
+
+```npm run-script build-osx```
