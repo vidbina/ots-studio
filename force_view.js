@@ -1,9 +1,11 @@
 const DEBUG = true;
 
 function log(msg) {
+  console.log('DEBUG ' + DEBUG);
   if(DEBUG == true) console.log(msg);
 }
 
+//var dialog = require('dialog'),
 var remote = require('remote'),
     ipc = require('ipc'),
     fs = remote.require('fs');
@@ -292,7 +294,8 @@ function uriImage(data, type) {
 var graphic = require('./png.js');
 function loadImages(images) {
   for(var i = 0; f = images[i]; i++) {
-    fs.readFile(f, function(err, data) {
+    fs.readFile(__dirname + "/" + f, function(err, data) {
+      if(data) {
       var image = graphic.PngImage(data);
       background.append('svg:image')
         .attr('xmlns', 'http://www.w3.org/2000/svg')
@@ -302,22 +305,32 @@ function loadImages(images) {
         .attr('width', image.width)
         .attr('height', image.height)
         .attr('xlink:href', image.uri);
+      }
     });
   }
 }
 
 function loadSystem(filename) {
-  fs.readFile(filename, function(err, data) {
-    if(err) log('read error');
-    if(err) log(err);
-    json_data = JSON.parse(data);
-    nodes = json_data.nodes;
-    links = json_data.links;
-    redraw();
-  });
+  //log(dialog);
+//  dialog.showOpenDialog({
+//    properties: [ 'openFile' ],
+//    filters: [ { name: 'JSON', extensions: ['json'] } ]
+//  }, function(filenames) {
+    if(filename) {
+      fs.readFile(__dirname + "/" + filename, function(err, data) {
+        if(err) log('read error');
+        if(err) log(err);
+        json_data = JSON.parse(data);
+        nodes = json_data.nodes;
+        links = json_data.links;
+        redraw();
+      });
+    }
+  //});
 }
 
 function saveSystem(filename) {
+  /*
   data = {
     nodes: nodes,
     links: links
@@ -326,6 +339,7 @@ function saveSystem(filename) {
     if(err) log('write failed');
     log('written');
   });
+  */
 }
 
 var ret = null;
@@ -358,8 +372,12 @@ function keydown() {
 }
 
 var actions = {
-  openFile: function(args) { loadSystem('file.json'); },
-  saveFile: function(args) { saveSystem('file.json'); },
+  openFile: function(args) { 
+    loadSystem('file.json'); 
+  },
+  saveFile: function(args) { 
+    //saveSystem('file.json'); 
+  },
   showLayers: function(args) { loadImages(['bg.png']); },
   showProperties: function(args) { ipc.sendSync('show-properties-window'); },
 }

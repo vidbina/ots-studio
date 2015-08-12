@@ -2,14 +2,23 @@
   "name": "ots-studio",
   "version": "0.0.1",
   "license": "MIT",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:vidbina/ots-studio.git"
+  },
   "author": [
-    { 
-      "name": "David Asabina", 
-      "email": "david@supr.nu", 
+    {
+      "name": "David Asabina",
+      "email": "david@supr.nu",
       "url": "supr.nu"
     }
   ],
   "main": "main.js",
   "dependencies": {
+    "asar": "~0.7.2"
+  },
+  "devDependencies": {
+    "electron-prebuilt": "^0.30.4"
   }
 }
