@@ -31,3 +31,12 @@ Run the application by running
 Build the application by running
 
 ```npm run-script build-osx```
+
+### Troubleshooting
+
+#### ELIFECYCLE or ENOENT error events
+
+Sometimes running `npm run-script start` may throw errors. Try rebuilding the
+npm dependencies when that happens using:
+
+```npm rebuild```
