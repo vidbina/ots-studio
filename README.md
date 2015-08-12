@@ -12,3 +12,9 @@ The current file is a build for OSX. There is at least 300 MB of data embedded w
  - [ ] Draw a background image to be used as overlay
 
 **Objective:** Discover if the drawing logic is somewhat intuitive and what needs to be modified to make drawing somewhat easier for the end-user. Anything related to the properties is not being tested in this run, because the properties pane is not enabled yet. That will be exposed in the next release.
+
+## Setup
+
+Install grunt
+
+```npm install -g grunt-cli```

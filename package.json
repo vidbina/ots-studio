@@ -15,10 +15,10 @@
     }
   ],
   "main": "main.js",
-  "dependencies": {
-    "asar": "~0.7.2"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "electron-prebuilt": "^0.30.4"
+    "asar": "~0.7.2",
+    "electron-prebuilt": "^0.30.4",
+    "grunt": "^0.4.5"
   }
 }
