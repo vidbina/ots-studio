@@ -24,7 +24,8 @@ var template = [
       { 
         label: 'Open File',
         selector: 'openFile:',
-        accelerator: 'Command+O'
+        accelerator: 'Command+O',
+        click: function() { loadSystem(); }
       },
       {
         label: 'Save',
