@@ -6,9 +6,16 @@ function log(msg) {
 }
 
 var remote = require('remote'),
-    dialog = remote.require('dialog');
+    dialog = remote.require('dialog'),
     ipc = require('ipc'),
-    fs = remote.require('fs');
+    fs = remote.require('fs'),
+    Menu = remote.require('menu');
+  
+console.log('start');
+var template = require('./src/canvas/menu.js');
+var menu = Menu.buildFromTemplate(template);
+Menu.setApplicationMenu(menu);
+
 
 var width = 960,
     height = 500,

@@ -65,6 +65,9 @@ app.on('ready', function() {
     mainWindow.toggleDevTools();
     event.returnValue = true
   });
+  ipc.on('quit', function(event, args) {
+    app.quit();
+  });
   ipc.on('show-properties-window', function(event, args) {
     propertiesWindow = new BrowserWindow({
       "width": 200,
