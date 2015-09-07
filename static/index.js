@@ -1,3 +1,5 @@
+console.log('Open Trafic Sim Studio');
+
 const DEBUG = true;
 
 function log(msg) {
@@ -10,16 +12,19 @@ var remote = require('remote'),
     ipc = require('ipc'),
     fs = remote.require('fs'),
     Menu = remote.require('menu');
-  
-console.log('start');
-var template = require('./src/canvas/menu.js');
-var menu = Menu.buildFromTemplate(template);
-Menu.setApplicationMenu(menu);
 
+var configuration = {};
+
+var setupStudioMenu = function(config) {
+  menuTemplate = require('../src/canvas/menu.js');
+  Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate));
+}
 
 var width = 960,
     height = 500,
     fill = d3.scale.category20();
+
+setupStudioMenu(configuration);
 
 // mouse event vars
 var selected_node = null,
@@ -298,7 +303,7 @@ function uriImage(data, type) {
 }
 
 // TODO: change ./png.js to ./images.js
-var graphic = require('./png.js');
+var graphic = require('../src/png.js');
 function loadImages(images) {
   for(var i = 0; f = images[i]; i++) {
     fs.readFile(__dirname + "/" + f, function(err, data) {
@@ -386,4 +391,5 @@ var actions = {
   },
   showLayers: function(args) { loadImages(['bg.png']); },
   showProperties: function(args) { ipc.sendSync('show-properties-window'); },
+  startSimulation: function(args) { console.log('sim'); }
 }

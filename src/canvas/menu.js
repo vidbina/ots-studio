@@ -14,7 +14,7 @@ var template = [
         label: 'Quit',
         accelerator: 'Command+Q',
         selector: 'terminate:',
-        click: function() { ipc.send('quit'); }
+        click: function() { require('ipc').send('quit'); }
       },
     ]
   },

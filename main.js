@@ -54,7 +54,7 @@ app.on('ready', function() {
 
   propertiesWindow = null; 
 
-  mainWindow.loadUrl("file://" + __dirname + "/index.html")
+  mainWindow.loadUrl("file://" + __dirname + "/static/index.html")
   //mainWindow.setRepresentedFilename('/etc/sim.ots');
   //mainWindow.setDocumentEdited(true);
   ipc.on('toggle-dev-tools', function(event, args) {
