@@ -1,0 +1,16 @@
+digraph structs {
+node [shape=record]
+  main [schape=record,label="file management|messaging|ui-event-handling"];
+  image_handler [shape=record,label="png"];
+  canvas_gui [label="Canvas GUI"]
+  prop_gui [label="Properties GUI"]
+
+  main -> canvas_gui
+  main -> prop_gui
+
+  canvas_gui -> main
+  prop_gui -> main
+
+  canvas_gui -> image_handler 
+  canvas_gui -> menu
+}
