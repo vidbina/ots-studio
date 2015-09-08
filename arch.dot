@@ -7,10 +7,10 @@ node [shape=record]
 
   main -> canvas_gui
   main -> prop_gui
+  main -> menu
 
   canvas_gui -> main
   prop_gui -> main
 
   canvas_gui -> image_handler 
-  canvas_gui -> menu
 }

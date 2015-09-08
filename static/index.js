@@ -15,16 +15,9 @@ var remote = require('remote'),
 
 var configuration = {};
 
-var setupStudioMenu = function(config) {
-  menuTemplate = require('../src/canvas/menu.js');
-  Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate));
-}
-
 var width = 960,
     height = 500,
     fill = d3.scale.category20();
-
-setupStudioMenu(configuration);
 
 // mouse event vars
 var selected_node = null,

@@ -2,7 +2,8 @@ var app = require('app'),
     ipc = require('ipc'),
     //fs = require('fs'),
     BrowserWindow = require('browser-window'),
-    Menu = require('menu');
+    Menu = require('menu'),
+    menuTemplate = require('./src/menu.js');
 
 var DEBUG = true;
 
@@ -22,6 +23,7 @@ app.dock.setMenu(dockMenu);
 */
 
 
+
 app.on('window-all-closed', function() {
   log("closing app");
   app.quit();
@@ -37,6 +39,7 @@ app.on('ready', function() {
   log("ready");
 
   //var appIcon = new Tray('resources/icon.png');
+  Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate));
 
   mainWindow = new BrowserWindow({ 
     width: 1000, 
